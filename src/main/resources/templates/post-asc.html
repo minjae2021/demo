@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment/header :: header">
+    <title>post</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<div class="container">
+    <div th:replace="fragment/bodyHeader :: bodyHeader"/>
+    <div>
+    	<!-- <a class="btn btn-success" href="/post/new" float="left">글쓰기</a> -->
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            	<th>번호</th>
+                <th>제목</th>
+                <th>내용</th>
+                <th>작성자</th>
+                <th>날짜</th>
+                <th>수정</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post : ${posts}">
+            	<td th:text="${post.postId}"></td>
+                <td th:text="${post.title}"></td>
+                <td th:text="${post.content}"></td>
+                <td th:text="${post.writer}"></td>
+                <td th:text="${post.createDateTime}"></td>
+                <td><a th:href="@{/post/{id}/update(id=${post.postId})}" class="btn btn-primary">수정</a></td> 
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- 정렬 -->
+    <div class="dropdown">
+		<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			정렬
+		</button>
+	<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+	    <a class="dropdown-item" href="/">최신순</a>
+	    <a class="dropdown-item" href="/asc">오래된순</a>
+  	</div>
+</div>
+	<!-- 페이징 -->
+    <nav aria-label="Page navigation example">
+  		<ul class="pagination justify-content-center"
+  			th:with="start=${T(Math).floor(posts.number/10)*10 + 1}, 
+  				last=(${start + 9 < posts.totalPages ? start + 9 : posts.totalPages})">
+  			<!-- 이전 페이지 -->
+		    <li class="page-item" th:class="${posts.first} ? 'disabled'">
+		    	<a class="page-link" th:href="${posts.first} ? '#' :@{/asc(page=${posts.number})}">
+		    		&laquo;</a>
+		    </li>
+		    <!-- 현재 페이지 -->
+		    <li class="page-item" th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == posts.number + 1} ? 'active'">
+		    	<a class="page-link" th:href="@{/asc(page=${page})}" th:text="${page}"></a>
+		    </li>
+		    <!-- <li class="page-item"><a class="page-link" href="">1</a></li> -->
+		    <!-- 다음 페이지 -->
+		    <li class="page-item" th:class="${posts.last} ? 'disabled'">
+		    	<a class="page-link" th:href="${posts.last} ? '#' :@{/asc(page=${posts.number+2})}">
+		    		&raquo;</a>
+		    </li>
+		    <!-- <li><a class="page-link" href="">&raquo;</a></li> -->
+		</ul>
+	</nav>
+    <div th:replace="fragment/footer :: footer"/>
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="header">
+	<meta charset="utf-8">
+    <!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrinkto-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="/css/bootstrap.min.css" integrity="sha384ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Custom styles for this template -->
+    <link href="/css/jumbotron-narrow.css" rel="stylesheet">
+    <title>board</title>
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragment/bodyHeader :: bodyHeader"/>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>게시판 이름</th>
+                <th>게시판 id</th>
+                <th>게시판 url</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="board : ${boards}">
+                <td th:text="${board.name}"></td>
+                <td th:text="${board.boardId}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragment/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+</html>
